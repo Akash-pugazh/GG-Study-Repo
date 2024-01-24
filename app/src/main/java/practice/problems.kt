@@ -26,9 +26,8 @@ fun main() {
     val initialParent = null
     val treeObjectsList = flatArrayToTree(inputNodeObjectsList, initialParent, initialChildrenList)
     flattenTreeIdPrinter(treeObjectsList)
-    println(inputNodeObjectsList.toString())
 }
-data class Node(
+class Node(
     val id: Int,
     val name: String,
     val parent: Int?,
