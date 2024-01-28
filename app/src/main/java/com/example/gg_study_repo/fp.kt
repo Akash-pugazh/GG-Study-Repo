@@ -34,21 +34,48 @@ fun main() {
         val res = acc + i
         res
     }
-
+    //
     fun addTwoNumbers(num1: Int, num2: Int): Int {
         return num1 + num2
     }
 
-    fun printResultOfSum(addFn: (Int, Int) -> Int): Int{
-        return addFn(1, 2)
+    fun printResultOfSum(first: Int, second: Int, addFn: twoIntInputAndReturnsInt): Int {
+
+        return addFn(first, second)
     }
 
-    printResultOfSum(addTwoNumbers)
+//    printResultOfSum(1, 2, ::addTwoNumbers)
 
-    val l = List(size = 10) { it }
-    println('a' + 10)
-    for (char in ('a'..'z')) println(char)
+    println(printResultOfSum(1, 2) { a, b -> a + b })
+
+    println(printResultOfSum(1, 2) { a, b -> a + b })
+
+
+//    val testtt = mutableMapOf<String, Int>()
+
+//    val l = List(size = 10) { it }
+//    println('a' + 10)
+//    for (char in ('a'..'z')) println(char)
+
+
+    val isEven = { el: Int -> el % 2 == 0 }
+    println(List(size = 10) { it + 1 }.filter(isEven))
+
+    println(List(10){it + 1}.any{ it > 15 })
+
+    val res = List(10){it + 1}.sum()
+    val listTest = (1..10).toList()
+
+    listTest.all(isEven)
+
+    val (one, two, three) = listOf(1, 2, 3)
+
 
 
 }
+
+
+typealias twoIntInputAndReturnsInt = (Int, Int) -> Int
+
+
 

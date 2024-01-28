@@ -1,5 +1,7 @@
 package com.example.gg_study_repo
 
+import java.util.Locale
+
 class Empty {
     var x: Int = 0
 }
@@ -26,6 +28,46 @@ fun main(args: Array<String>) {
     println(ambaniMall.ownerPrompt())
 
     val aakashAccount = Account("Aakash")
+
+    Calculator.sum(1, 2)
+
+    val myDatabase = Database.getInstance()
+    val myCloneDatabase = Database.getInstance()
+
+    println(myDatabase)
+    println(myCloneDatabase)
+
+
+    println(SingletonDatabase)
+    println(SingletonDatabase)
+
+
+    val secondaryConsUser = LazyUser("SecondaryConsUser")
+
+    secondaryConsUser.childrenName = "Jith"
+    println(secondaryConsUser.childrenName)
+
+    val ajay = LazyUser("Ajay", "Din", 12)
+//    lazy Initialization
+    val vijay by lazy {
+        LazyUser("Vijay", "Din", 12)
+    }
+    println(vijay.firstName)
+
+    println(Direction.EAST.name)
+    println(Direction.EAST.direction)
+
+    for (direction in Direction.entries) {
+        println(direction.direction + direction.distance)
+    }
+    Direction.EAST.printData()
+
+    val listView = ListView(arrayOf("Hello", "Hi"))
+    listView.ListViewItem().displayItem(1)
+
+
+    val myPlane = Plane("KingFisher", "White", 12)
+    println(myPlane.start())
 
 
 }
@@ -185,7 +227,7 @@ open class Account(holderName: String) : AccountFunctions() {
     }
 }
 
-open class testAccount: AccountFunctions(){
+open class testAccount : AccountFunctions() {
     override val notificationsSent: Int = 0
 
     override fun sendNotification() {
@@ -204,6 +246,174 @@ abstract class AccountFunctions {
 interface Maintenace {
     val isInMaintenace: Boolean
 }
+
+
+class Calculator {
+    //    Companion object can be created to access the class properties and member functions without creation of classes
+    companion object {
+        fun sum(num1: Int, num2: Int): Int {
+            return num1 + num2
+        }
+    }
+}
+
+
+class Database private constructor() {
+    companion object {
+        private var instance: Database? = null
+
+        fun getInstance(): Database? {
+            if (instance == null) {
+                instance = Database()
+            }
+            return instance
+        }
+
+    }
+}
+
+object SingletonDatabase {
+    init {
+        println("Database created")
+    }
+}
+
+
+class LazyUser(firstName: String, val lastName: String, val age: Int) {
+
+
+    var firstName: String = firstName
+        get() {
+            return "First Name fo User : $field"
+        }
+        set(value) {
+            field = value.lowercase(Locale.ROOT)
+        }
+
+    lateinit var childrenName: String
+
+    constructor(firstName: String) : this(firstName, "", 0) {
+        println("Secondary Constructor 1 used")
+    }
+
+    constructor(firstName: String, age: Int) : this(firstName, "", age) {
+        println("Secondary construcror 2 used")
+    }
+
+    init {
+        println("User $firstName was created")
+    }
+}
+
+
+enum class Direction(var direction: String, var distance: Int) {
+    NORTH("North", 10),
+    SOUTH("South", 10),
+    EAST("East", 10),
+    WEST("West", 10);
+
+    fun printData() {
+        println("Direction is $direction Distance is $distance")
+    }
+}
+
+
+// Inner Class
+
+class ListView(val items: Array<String>) {
+    inner class ListViewItem() {
+        fun displayItem(position: Int) {
+            println(items[position])
+        }
+    }
+}
+
+enum class TransactionType() {
+    WITHDRAW,
+    DEPOSIT
+}
+
+open class Transaction {
+    companion object {
+        fun transact(transactionType: TransactionType, amount: Int) {
+            when (transactionType) {
+                TransactionType.DEPOSIT -> {
+                    deposit(amount)
+                }
+
+                TransactionType.WITHDRAW -> {
+
+                }
+
+                else -> {
+                    println("Failed Transaction, Method Does not exist")
+                }
+            }
+        }
+
+        fun deposit(amount: Int) {
+
+        }
+
+        fun withDraw(amount: Int) {
+
+        }
+
+    }
+
+}
+
+class BankAccount(
+    val userName: String,
+    var balance: Int = 0,
+    val transactions: MutableList<Transaction> = mutableListOf<Transaction>()
+) : Transaction() {
+
+
+}
+
+
+open class Vehicle(val name: String, val color: String) {
+    open fun start(): String {
+        return "$name is started"
+    }
+
+    open fun stop(): String {
+        return "$name is stopped moving"
+    }
+}
+
+class Plane(name: String, color: String, val engines: Int) : Vehicle(name, color) {
+    override fun start(): String {
+        return "The $name plane started flying"
+    }
+
+    override fun stop(): String {
+        return "The $name plane has landed"
+    }
+
+}
+
+
+// Abstract Classes
+
+abstract class Vehicle1 {
+    abstract fun start()
+    abstract fun stop()
+}
+
+class Bike: Vehicle1() {
+    override fun start() {
+
+    }
+    override fun stop() {
+
+    }
+}
+
+
+
+
 
 
 
